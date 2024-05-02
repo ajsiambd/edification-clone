@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Enrollment Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5; /* Light gray background */
+        }
+
+        h2 {
+            text-align: center;
+            color: #ff8800; /* Orange-pink color for heading */
+            margin-bottom: 20px;
+        }
+
+        form {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff6f5; /* Light red background for form */
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* Shadow for the form */
+        }
+
+        fieldset {
+            border: none;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #000000; /* Orange-pink color for labels */
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="tel"],
+        input[type="date"],
+        select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ffeded;
+            border-radius: 5px;
+            background-color: #fff; /* White background for input fields */
+        }
+        input{
+            border-radius: 10px;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        input[type="submit"] {
+            width: 100%;
+            padding: 12px;
+            background-color: #ff944d; /* Orange color for submit button */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #ff753d; /* Darker shade of orange on hover */
+        }
+
+        .warning {
+            color: #ff0000; /* Red color for warning messages */
+            font-size: 0.8em;
+            margin-top: 5px;
+        }
+
+        .box {
+            border: 1px solid #ccc;
+            padding: 15px;
+            border-radius: 5px;
+            background-color: #fff; /* White background for boxes */
+            margin-bottom: 20px;
+        }
+
+        .tabs {
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            display: inline-block;
+            padding: 10px 15px;
+            cursor: pointer;
+            background-color: #ff944d; /* Orange color for tabs */
+            border-radius: 5px 5px 0 0;
+            margin-right: 10px;
+            color: white;
+        }
+
+        .tab.active {
+            background-color: #ff753d; /* Darker shade of orange for active tab */
+        }
+
+        .tab-content {
+            display: none;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            background-color: white;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @media only screen and (max-width: 768px) {
+            form {
+                padding: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h2>Course Enrollment Form</h2>
+    <form action="enroll.php" method="POST">
+        <fieldset>
+            <legend>Personal Information:</legend>
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            <span class="warning">Please enter your name.</span>
+
+            <label for="email">Email Address:</label>
+            <input type="email" id="email" name="email" required>
+            <span class="warning">Please enter a valid email address.</span>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+            <span class="warning">Please enter your phone number.</span>
+        </fieldset>
+
+        <div class="tabs">
+            <div class="tab active" data-tab="credit-card">Credit Card</div>
+            <div class="tab" data-tab="paypal">PayPal</div>
+            <div class="tab" data-tab="bank-transfer">Bank Transfer</div>
+        </div>
+
+        <div id="credit-card" class="tab-content active">
+            <fieldset class="box">
+                <legend>Payment Information:</legend>
+                <label for="cardholderName">Cardholder Name:</label>
+                <input type="text" id="cardholderName" name="cardholderName">
+
+                <label for="cardNumber">Card Number:</label>
+                <input type="text" id="cardNumber" name="cardNumber">
+
+                <label for="expirationDate">Expiration Date:</label>
+                <input type="text" id="expirationDate" name="expirationDate">
+
+                <label for="cvv">CVV/CVC:</label>
+                <input type="text" id="cvv" name="cvv">
+            </fieldset>
+        </div>
+
+        <div id="paypal" class="tab-content">
+            <p>PayPal payment instructions...</p>
+        </div>
+
+        <div id="bank-transfer" class="tab-content">
+            <p>Bank transfer payment instructions...</p>
+        </div>
+
+        <fieldset class="box">
+            <legend>Terms & Conditions:</legend>
+            <input type="checkbox" id="terms" name="terms" required>
+            <label for="terms">I agree to the Terms & Conditions of this course.</label>
+            <span class="warning">Please agree to the terms and conditions.</span>
+        </fieldset>
+
+        <fieldset class="box">
+            <legend>Coupon Code:</legend>
+            <label for="couponCode">Coupon Code:</label>
+            <input type="text" id="couponCode" name="couponCode">
+            <span class="warning" id="couponWarning"></span>
+        </fieldset>
+
+        <input type="submit" value="Submit">
+    </form>
+    <script>
+        document.querySelectorAll('.tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                const tabContentId = tab.getAttribute('data-tab');
+                document.querySelectorAll('.tab-content').forEach(content => {
+                    content.classList.remove('active');
+                });
+                document.getElementById(tabContentId).classList.add('active');
+                document.querySelectorAll('.tab').forEach(tab => {
+                    tab.classList.remove('active');
+                });
+                tab.classList.add('active');
+            });
+        });
+
+        document.querySelector('form').addEventListener('submit', function(event) {
+            event.preventDefault();
+            var couponCode = document.getElementById('couponCode').value.trim();
+            var couponWarning = document.getElementById('couponWarning');
+
+            // Example coupon code validation
+            if (couponCode === 'FREECOURSE') {
+                couponWarning.textContent = 'Course is free with this coupon code!';
+                couponWarning.style.color = '#4CAF50'; // Green color for success message
+            } else {
+                couponWarning.textContent = 'Invalid coupon code.';
+                couponWarning.style.color = '#ff6b6b'; // Red color for error message
+            }
+        });
+    </script>
+</body>
+</html>
